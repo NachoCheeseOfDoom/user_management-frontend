@@ -9,18 +9,19 @@ export const Dashboard = () => {
   const [loggedInUser, setLoggedInUser] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
-  const [toastMessage, setToastMessage] = useState(""); // For toast message
-  const [showToast, setShowToast] = useState(false); // To control toast visibility
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastBgColor, setToastBgColor] = useState("#ffffff");
+  const [toastTxtColor, setToastTxtColor] = useState("#222222");
 
-  // Extract fetchUsers outside of useEffect to make it reusable
   const fetchUsers = async () => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user"); // Assume the username or email is stored
+    const user = localStorage.getItem("user");
     if (!token) {
       navigate("/login");
       return;
     }
-    setLoggedInUser(user); // No need to convert to number if it's a string (like username)
+    setLoggedInUser(user);
 
     const response = await axios.get("http://localhost:3000/users", {
       headers: {
@@ -58,8 +59,14 @@ export const Dashboard = () => {
     }
   };
 
-  const showNotification = (message) => {
+  const showNotification = (
+    message,
+    bgColor = "#ffffff",
+    txtColor = "#222222"
+  ) => {
     setToastMessage(message);
+    setToastBgColor(bgColor);
+    setToastTxtColor(txtColor);
     setShowToast(true);
     setTimeout(() => {
       setShowToast(false);
@@ -69,14 +76,11 @@ export const Dashboard = () => {
   const handleBlock = async () => {
     const token = localStorage.getItem("token");
 
-    // Check if the logged-in user is being blocked by comparing the username or email
     const loggedInUserObject = users.find(
       (user) => user.name === loggedInUser || user.email === loggedInUser
     );
 
-    // Ensure that the logged-in user gets blocked before logging out
     if (selectedUsers.includes(loggedInUserObject.id)) {
-      // Block the logged-in user first
       await axios.post(
         `http://localhost:3000/users/block/${loggedInUserObject.id}`,
         {},
@@ -87,13 +91,11 @@ export const Dashboard = () => {
         }
       );
 
-      // Show notification and log out after blocking
       showNotification("You are blocked, logging out...");
-      setTimeout(() => handleLogout(), 1000); // Log out after showing the toast for 1 second
-      return; // No need to proceed with the rest
+      setTimeout(() => handleLogout(), 1000);
+      return;
     }
 
-    // Block other selected users
     for (const id of selectedUsers) {
       await axios.post(
         `http://localhost:3000/users/block/${id}`,
@@ -125,20 +127,18 @@ export const Dashboard = () => {
       );
     }
 
-    showNotification("Users unblocked");
+    showNotification("Users unblocked", "#198754", "#ffffff");
     await fetchUsers();
   };
 
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
 
-    // Check if the logged-in user is being deleted
     const loggedInUserObject = users.find(
       (user) => user.name === loggedInUser || user.email === loggedInUser
     );
 
     if (selectedUsers.includes(loggedInUserObject.id)) {
-      // Delete the logged-in user first
       await axios.delete(
         `http://localhost:3000/users/${loggedInUserObject.id}`,
         {
@@ -148,13 +148,11 @@ export const Dashboard = () => {
         }
       );
 
-      // Show notification and log out after deletion
-      showNotification("You are deleted, logging out...");
-      setTimeout(() => handleLogout(), 1000); // Log out after showing the toast for 1 second
-      return; // No need to proceed with the rest
+      showNotification("You are deleted, logging out...", "#dc3545", "#ffffff");
+      setTimeout(() => handleLogout(), 1000);
+      return;
     }
 
-    // Delete other selected users
     for (const id of selectedUsers) {
       await axios.delete(`http://localhost:3000/users/${id}`, {
         headers: {
@@ -163,7 +161,7 @@ export const Dashboard = () => {
       });
     }
 
-    showNotification("Users deleted");
+    showNotification("Users deleted", "#dc3545", "#ffffff");
     await fetchUsers();
   };
 
@@ -186,21 +184,19 @@ export const Dashboard = () => {
       </nav>
       <div className="container">
         <h3 className="mt-4">User Table</h3>
-        <div className="btn-group" role="group" aria-label="Basic example">
+        <div className="d-flex mt-3" role="group" aria-label="Basic example">
           <button
-            className="btn btn-warning mt-3"
+            className="btn btn-warning me-3"
             onClick={() => handleBlock()}>
-            Block
+            <i className="fas fa-lock me-2"></i>Block
           </button>
           <button
-            className="btn btn-success mt-3"
+            className="btn btn-success me-3"
             onClick={() => handleUnblock()}>
-            Unblock
+            <i className="fas fa-unlock me-2"></i>Unblock
           </button>
-          <button
-            className="btn btn-danger mt-3"
-            onClick={() => handleDelete()}>
-            Delete
+          <button className="btn btn-danger" onClick={() => handleDelete()}>
+            <i className="fas fa-trash-alt me-2"></i>Delete
           </button>
         </div>
         <table className="table table-bordered mt-4">
@@ -252,9 +248,14 @@ export const Dashboard = () => {
 
       {showToast && (
         <div
-          className="toast show position-fixed bottom-0 end-0 m-4"
+          className="toast show position-fixed top-0 start-50 translate-middle-x m-4"
           role="alert"
-          style={{ width: "210px", textAlign: "center" }}>
+          style={{
+            backgroundColor: toastBgColor,
+            color: toastTxtColor,
+            width: "210px",
+            textAlign: "center",
+          }}>
           <div className="toast-body fw-bold">{toastMessage}</div>
         </div>
       )}

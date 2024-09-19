@@ -6,7 +6,12 @@ export const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // For navigation
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastBgColor, setToastBgColor] = useState("#ffffff");
+  const [toastTxtColor, setToastTxtColor] = useState("#222222");
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -16,12 +21,32 @@ export const Register = () => {
         email,
         password,
       });
-      alert("Registration successful! Please login.");
-      navigate("/login"); // Redirect to login after registration
+      showToastNotification("Registration successful!", "#28a745", "#ffffff");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       console.error("Error registering", error);
-      alert("Registration failed, please try again.");
+      showToastNotification(
+        "Registration failed, please try again.",
+        "#CC3300",
+        "#ffffff"
+      );
     }
+  };
+
+  const showToastNotification = (
+    message,
+    bgColor = "#ffffff",
+    txtColor = "#222222"
+  ) => {
+    setToastMessage(message);
+    setToastBgColor(bgColor);
+    setToastTxtColor(txtColor);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
   };
 
   return (
@@ -99,6 +124,21 @@ export const Register = () => {
           </div>
         </div>
       </div>
+
+      {showToast && (
+        <div
+          className="toast show position-fixed top-0 start-50 translate-middle-x m-4"
+          role="alert"
+          style={{
+            backgroundColor: toastBgColor,
+            color: toastTxtColor,
+            width: "210px",
+            textAlign: "center",
+            zIndex: 1050,
+          }}>
+          <div className="toast-body fw-bold">{toastMessage}</div>
+        </div>
+      )}
     </section>
   );
 };
