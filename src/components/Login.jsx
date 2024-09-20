@@ -14,10 +14,13 @@ export const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       const { token, user } = response.data;
       localStorage.setItem("token", token);

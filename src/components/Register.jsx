@@ -16,11 +16,14 @@ export const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/auth/register", {
-        name,
-        email,
-        password,
-      });
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/register`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
       showToastNotification("Registration successful!", "#28a745", "#ffffff");
       setTimeout(() => {
         navigate("/login");

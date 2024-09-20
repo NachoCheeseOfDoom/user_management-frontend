@@ -23,11 +23,14 @@ export const Dashboard = () => {
     }
     setLoggedInUser(user);
 
-    const response = await axios.get("http://localhost:3000/users", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     setUsers(response.data);
   };
 
@@ -82,7 +85,9 @@ export const Dashboard = () => {
 
     if (selectedUsers.includes(loggedInUserObject.id)) {
       await axios.post(
-        `http://localhost:3000/users/block/${loggedInUserObject.id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/block/${
+          loggedInUserObject.id
+        }`,
         {},
         {
           headers: {
@@ -98,7 +103,7 @@ export const Dashboard = () => {
 
     for (const id of selectedUsers) {
       await axios.post(
-        `http://localhost:3000/users/block/${id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/block/${id}`,
         {},
         {
           headers: {
@@ -117,7 +122,7 @@ export const Dashboard = () => {
 
     for (const id of selectedUsers) {
       await axios.post(
-        `http://localhost:3000/users/unblock/${id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/unblock/${id}`,
         {},
         {
           headers: {
@@ -140,7 +145,9 @@ export const Dashboard = () => {
 
     if (selectedUsers.includes(loggedInUserObject.id)) {
       await axios.delete(
-        `http://localhost:3000/users/${loggedInUserObject.id}`,
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${
+          loggedInUserObject.id
+        }`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -154,11 +161,14 @@ export const Dashboard = () => {
     }
 
     for (const id of selectedUsers) {
-      await axios.delete(`http://localhost:3000/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     }
 
     showNotification("Users deleted", "#dc3545", "#ffffff");
