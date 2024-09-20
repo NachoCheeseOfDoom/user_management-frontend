@@ -24,7 +24,7 @@ export const Dashboard = () => {
     setLoggedInUser(user);
 
     const response = await axios.get(
-      `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users`,
+      `${import.meta.env.VITE_BACKEND_URL}/users`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export const Dashboard = () => {
 
     if (selectedUsers.includes(loggedInUserObject.id)) {
       await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/block/${
+        `${import.meta.env.VITE_BACKEND_URL}/users/block/${
           loggedInUserObject.id
         }`,
         {},
@@ -103,7 +103,7 @@ export const Dashboard = () => {
 
     for (const id of selectedUsers) {
       await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/block/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/block/${id}`,
         {},
         {
           headers: {
@@ -122,7 +122,7 @@ export const Dashboard = () => {
 
     for (const id of selectedUsers) {
       await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/unblock/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/unblock/${id}`,
         {},
         {
           headers: {
@@ -145,9 +145,7 @@ export const Dashboard = () => {
 
     if (selectedUsers.includes(loggedInUserObject.id)) {
       await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${
-          loggedInUserObject.id
-        }`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/${loggedInUserObject.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -161,14 +159,11 @@ export const Dashboard = () => {
     }
 
     for (const id of selectedUsers) {
-      await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     }
 
     showNotification("Users deleted", "#dc3545", "#ffffff");

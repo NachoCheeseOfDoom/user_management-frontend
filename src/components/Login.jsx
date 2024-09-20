@@ -15,7 +15,7 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
         {
           email,
           password,
