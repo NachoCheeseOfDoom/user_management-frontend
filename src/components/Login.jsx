@@ -25,6 +25,7 @@ export const Login = () => {
       console.log("all: ", import.meta.env);
 
       const { token, user } = response.data;
+      console.log(user);
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", user);
