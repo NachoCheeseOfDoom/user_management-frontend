@@ -24,7 +24,7 @@ export const Register = () => {
       });
       showToastNotification("Registration successful!", "#28a745", "#ffffff");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
       }, 2000);
     } catch (error) {
       console.error("Error registering", error);

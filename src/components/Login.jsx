@@ -25,13 +25,17 @@ export const Login = () => {
       console.log("all: ", import.meta.env);
 
       const { token, user } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", user.name);
-
-      navigate("/dashboard");
+      if (token && user) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", user.name);
+        navigate("/dashboard");
+      } else {
+        showToastNotification("Incorrect credentials.", "#fff", "#CC3300");
+      }
     } catch (error) {
       if (error.response && error.response.status === 403) {
         showToastNotification("User is blocked", "#CC3300", "#ffffff");
+        console.log(error.response);
       } else {
         showToastNotification("Incorrect credentials.", "#fff", "#CC3300");
       }
