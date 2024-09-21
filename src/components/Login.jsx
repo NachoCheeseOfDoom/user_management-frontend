@@ -21,11 +21,7 @@ export const Login = () => {
           password,
         }
       );
-      console.log(`env: ${import.meta.env.VITE_BACKEND_URL}`);
-      console.log("all: ", import.meta.env);
-
       const { token, user } = response.data;
-      console.log(user);
       if (token && user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", user.name);

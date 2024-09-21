@@ -12,7 +12,6 @@ export const Register = () => {
   const [toastTxtColor, setToastTxtColor] = useState("#222222");
 
   const navigate = useNavigate();
-  console.log(`${import.meta.env.VITE_BACKEND_URL}`);
 
   const handleRegister = async (e) => {
     e.preventDefault();
