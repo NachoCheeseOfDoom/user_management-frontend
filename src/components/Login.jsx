@@ -28,7 +28,7 @@ export const Login = () => {
       console.log(user);
       if (token && user) {
         localStorage.setItem("token", token);
-        localStorage.setItem("user", user);
+        localStorage.setItem("user", user.name);
         navigate("/dashboard");
       } else {
         showToastNotification("Incorrect credentials.", "#fff", "#CC3300");
