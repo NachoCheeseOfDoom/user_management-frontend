@@ -32,7 +32,7 @@ export const Login = () => {
     } catch (error) {
       if (error.response && error.response.status === 403) {
         showToastNotification("User is blocked", "#CC3300", "#ffffff");
-        console.log(error.response);
+        console.error(error.response);
       } else {
         showToastNotification("Incorrect credentials.", "#fff", "#CC3300");
       }
