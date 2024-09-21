@@ -29,6 +29,7 @@ export const Register = () => {
       console.error("Error registering", error);
 
       // Check if the error response is about the email already existing
+      console.error("Response data:", error.response.data);
       if (
         error.response &&
         error.response.data &&
