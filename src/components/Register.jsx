@@ -27,11 +27,25 @@ export const Register = () => {
       }, 2000);
     } catch (error) {
       console.error("Error registering", error);
-      showToastNotification(
-        "Registration failed, please try again.",
-        "#CC3300",
-        "#ffffff"
-      );
+
+      // Check if the error response is about the email already existing
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.error === "Email already exists"
+      ) {
+        showToastNotification(
+          "User already exists, please try another email.",
+          "#CC3300",
+          "#ffffff"
+        );
+      } else {
+        showToastNotification(
+          "Registration failed, please try again.",
+          "#CC3300",
+          "#ffffff"
+        );
+      }
     }
   };
 
